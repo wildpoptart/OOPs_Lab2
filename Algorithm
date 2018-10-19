@@ -1,0 +1,94 @@
+//Stanyslav Borsh | Lab 2 | OOPS | 9/26/18 (This was properly formated in Notepad++ I swear)
+
+#include <iostream>                                                             //Includes necessary libraries for complier
+#include <fstream>
+#include <string>
+
+using namespace std;                                                            //Setups up code so that 'std' is needed to be typed
+
+void printMenu()                                                                //Menu function that prompts user to input a value 0-2
+{
+    cout << endl << "---------------- \n";
+    cout << "Enter 0 to exit \n";
+    cout << "Enter 1 to search by number \n";
+    cout << "Enter 2 to search by activity  : ";
+}
+
+int main()
+{
+
+    ifstream infile("Lab2_Schedule.txt");                                       //Inputs the data from the txt file into 'infile'
+
+    int choice = 0;                                                             //Variable holds the users input that is used to decide an event later in the program
+    int hour[24] = {0};                                                         //Fill hour array with 0's but will overwritten with the hour column from the txt file
+    string act[24] = {"Empty"};                                                 //Fill hour array with "Empty" but will be overwritten with the activity column from txt file
+
+    int i;                                                                      //Variable keeps track of row of array with future for loops
+    int time = 0;                                                               //User input variable that holds the input hour when searching by number
+
+    for(i = 0; i < 24; i++)                                                     //For loop to go through all the rows in each array
+    {
+        infile >> hour[i] >> act[i];                                            //Places schedule data from infile into the hour and act array
+        cout << act[i] << "\n";                                                 //Displays a list of activities for the use rto reference
+    }
+
+    do                                                                          //Start of 'do' loop allows program to loop until 'choice' is 0
+    {
+        printMenu();                                                            //Runs 'printMenu()' function to prompt user
+        cin >> choice;                                                          //users input is put into 'choice' for later comparison
+        if(choice == 0)                                                         //First comparison of choice ; this will exit if statement if user inputs 0
+        {
+            cout << "\n             Bye \n";
+        }
+        else if(choice == 1)                                                    //Second comparison if 'choice' equals 1
+        {
+            cout << "\nSelect hour : ";                                         //Prompts user for input
+            cin >> time;                                                        //User input stored in time
+            while(time >= 24)                                                   //Checks user input if greater than 24
+            {
+                cout << "Enter a actual hour: ";                                //Prompt user for input
+                cin >> time;                                                    //New user input stored in time
+            }
+            cout << "\n" << time << " = " << act[time] << "\n";                 //Uses the input hour as the index of the activity array and then displays the activity
+        }
+        else if(choice == 2)                                                    //Last comparison if 'choice equals 2
+        {
+            string inact;                                                       //Creates string that holds users activity input
+            string acttemp;                                                     //Creates string to temporarily hold the current  activity in the for loop for later comparison
+            int flag = 1;                                                       //Sets flag to 1 foe the while loop later
+            int itemp = 0;                                                      //Creates itemp to hold the value of current 'i' value in the for loop
+
+            cout << "Enter desired activity : ";
+            cin >> inact;
+            while(flag != 0)                                                    //Starts while loop and end when flag 0
+            {
+                for(int i = 0; i < 24; i++)                                     //For loop to go through the activity array
+                {
+                    if (inact == act[i])                                        //Check to see if the current elecemnt in the activity array is equal to the searched value
+                    {
+                        acttemp = act[i];                                       //If the the search value is equal to the current element in array, then store that string in acctemp for a comparison later
+                        itemp = i;                                              //Then store the current value of 'i' in itemp to display later
+                    }
+                }
+                if(inact == acttemp)                                            //If the seached value is equal to the value found in acttemp, then display the hour, else re-input search
+                {
+                    cout << "\n" << "The hour that this happens is : " << itemp;     //Displays hour using the value in itemp which is the related to the activity found in the loop above
+                    flag = 0;                                                        //Disables the while loop above and exits the 'choice = 2' section
+                }
+                else
+                {
+                    cout << "\n" << "No match, re-input activity : ";           //Prompts user for new search
+                    cin >> inact;                                               //Stores new search which is used in the next iteration of the while loop
+                }
+            }
+        }
+        else
+        {
+            cout << "Please input a value between 0 - 2";                       //If the value input from the printMenu event is not  between 0-2 re-enter value
+        }
+    }
+    while(choice != 0);                                                         //Once first if statement exited programs jumps here and ends do while loop and proceeds to end of program
+    return 0;
+}
+
+
