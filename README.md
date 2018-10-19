@@ -1,8 +1,5 @@
 # OOPs_Lab2
 C++ algorithm to search a given schedule
-
-I/O, Loops, and more
-
 Prepared by Stanyslav Borsh
 Fall 2018
 
